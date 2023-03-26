@@ -19,18 +19,27 @@ function onFormSubmit(e) {
   remove(LOCALSTORAGE_KEY);
 }
 
-function collectFormData(e) {
-  formData[e.target.name] = e.target.value;
+function collectFormData() {
+  formData.email = form.email.value;
+  formData.message = form.message.value;
 
   //   console.log(formData);
   save(LOCALSTORAGE_KEY, formData);
 }
+// function collectFormData(e) {
+//   formData[e.target.name] = e.target.value;
+
+//   //   console.log(formData);
+//   save(LOCALSTORAGE_KEY, formData);
+// }
 
 function fillEmailOnRefresh(key) {
   const dataToFill = load(key);
   //   form.email.value = dataToFill.email || '';
   if (dataToFill.email) {
     form.email.value = dataToFill.email;
+  } else {
+    form.email.value = '';
   }
 }
 function fillMessageOnRefresh(key) {
@@ -38,6 +47,8 @@ function fillMessageOnRefresh(key) {
   //   form.message.value = dataToFill.message || '';
   if (dataToFill.message) {
     form.message.value = dataToFill.message;
+  } else {
+    form.message.value = '';
   }
 }
 function save(key, value) {
