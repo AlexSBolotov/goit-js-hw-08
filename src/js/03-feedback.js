@@ -3,12 +3,16 @@ import throttle from 'lodash.throttle';
 const LOCALSTORAGE_KEY = 'feedback-form-state';
 const form = document.querySelector('.feedback-form');
 const formData = {};
+const message = 'message';
+const email = 'email';
 
 form.addEventListener('submit', onFormSubmit);
 form.addEventListener('input', throttle(collectFormData, 500));
 
-fillEmailOnRefresh(LOCALSTORAGE_KEY);
-fillMessageOnRefresh(LOCALSTORAGE_KEY);
+// console.log(form[message].value);
+
+fillFormOnRefresh(LOCALSTORAGE_KEY, message);
+fillFormOnRefresh(LOCALSTORAGE_KEY, email);
 
 function onFormSubmit(e) {
   e.preventDefault();
@@ -19,38 +23,23 @@ function onFormSubmit(e) {
   remove(LOCALSTORAGE_KEY);
 }
 
-function collectFormData() {
-  formData.email = form.email.value;
-  formData.message = form.message.value;
+function collectFormData(e) {
+  formData[e.target.name] = e.target.value;
 
   //   console.log(formData);
-  save(LOCALSTORAGE_KEY, formData);
+  save(LOCALSTORAGE_KEY, { ...load(LOCALSTORAGE_KEY), ...formData });
 }
-// function collectFormData(e) {
-//   formData[e.target.name] = e.target.value;
 
-//   //   console.log(formData);
-//   save(LOCALSTORAGE_KEY, formData);
-// }
-
-function fillEmailOnRefresh(key) {
+function fillFormOnRefresh(key, keyArg) {
   const dataToFill = load(key);
-  //   form.email.value = dataToFill.email || '';
-  if (dataToFill.email) {
-    form.email.value = dataToFill.email;
+
+  if (dataToFill) {
+    form[keyArg].value = dataToFill[keyArg];
   } else {
-    form.email.value = '';
+    form[keyArg].value = '';
   }
 }
-function fillMessageOnRefresh(key) {
-  const dataToFill = load(key);
-  //   form.message.value = dataToFill.message || '';
-  if (dataToFill.message) {
-    form.message.value = dataToFill.message;
-  } else {
-    form.message.value = '';
-  }
-}
+
 function save(key, value) {
   try {
     localStorage.setItem(key, JSON.stringify(value));

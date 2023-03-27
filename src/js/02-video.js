@@ -7,9 +7,9 @@ const LOCALSTORAGE_KEY = 'videoplayer-current-time';
 // console.log(iframe);
 
 player.on('timeupdate', throttle(currentTime, 1000));
+
 function currentTime({ seconds }) {
-  //   console.log(seconds);
   localStorage.setItem(LOCALSTORAGE_KEY, `${seconds}`);
 }
-
-player.setCurrentTime(localStorage.getItem(LOCALSTORAGE_KEY));
+// console.log(localStorage.getItem(LOCALSTORAGE_KEY) || 12);
+player.setCurrentTime(localStorage.getItem(LOCALSTORAGE_KEY) || 0);
