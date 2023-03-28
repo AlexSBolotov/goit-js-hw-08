@@ -8,11 +8,13 @@ const email = 'email';
 
 form.addEventListener('submit', onFormSubmit);
 form.addEventListener('input', throttle(collectFormData, 500));
-
+// console.log(form);
 // console.log(form[message].value);
 
-fillFormOnRefresh(LOCALSTORAGE_KEY, message);
-fillFormOnRefresh(LOCALSTORAGE_KEY, email);
+// fillFormOnRefresh(LOCALSTORAGE_KEY, message);
+// fillFormOnRefresh(LOCALSTORAGE_KEY, email);
+
+fillFormOnRefresh(LOCALSTORAGE_KEY);
 
 function onFormSubmit(e) {
   e.preventDefault();
@@ -26,19 +28,30 @@ function onFormSubmit(e) {
 function collectFormData(e) {
   formData[e.target.name] = e.target.value;
 
-  //   console.log(formData);
+  console.log(formData);
   save(LOCALSTORAGE_KEY, { ...load(LOCALSTORAGE_KEY), ...formData });
 }
 
 function fillFormOnRefresh(key, keyArg) {
   const dataToFill = load(key);
 
-  if (dataToFill) {
-    form[keyArg].value = dataToFill[keyArg];
-  } else {
-    form[keyArg].value = '';
+  for (prop in dataToFill) {
+    if (dataToFill) {
+      form[prop].value = dataToFill[prop];
+    } else {
+      form[prop].value = '';
+    }
   }
 }
+// function fillFormOnRefresh(key, keyArg) {
+//   const dataToFill = load(key);
+
+//   if (dataToFill) {
+//     form[keyArg].value = dataToFill[keyArg];
+//   } else {
+//     form[keyArg].value = '';
+//   }
+// }
 
 function save(key, value) {
   try {
