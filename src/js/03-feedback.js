@@ -8,8 +8,6 @@ const email = 'email';
 
 form.addEventListener('submit', onFormSubmit);
 form.addEventListener('input', throttle(collectFormData, 500));
-// console.log(form);
-// console.log(form[message].value);
 
 // fillFormOnRefresh(LOCALSTORAGE_KEY, message);
 // fillFormOnRefresh(LOCALSTORAGE_KEY, email);
@@ -32,7 +30,7 @@ function collectFormData(e) {
   save(LOCALSTORAGE_KEY, { ...load(LOCALSTORAGE_KEY), ...formData });
 }
 
-function fillFormOnRefresh(key, keyArg) {
+function fillFormOnRefresh(key) {
   const dataToFill = load(key);
 
   for (prop in dataToFill) {
